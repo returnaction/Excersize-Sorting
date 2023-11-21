@@ -31,9 +31,10 @@ namespace Excersize_Sorting
             //foreach(string w in words)
             //    Console.WriteLine(w);
 
-            int[] arr = { 2, 0, 2, 1, 1, 0 };
+            int[] arr = { 1, 1, 4, 2, 1, 3 };
             //int[] result = SelectionSort(arr);
-            int[] result2 = BubbleSort(arr);
+            //int[] result2 = BubbleSort(arr);
+            int result = HeightChecker(arr);
 
 
         }
@@ -102,5 +103,70 @@ namespace Excersize_Sorting
             return nums;
         }
 
+        public static int HeightCheckerMine(int[] arr)
+        {
+
+            int[] sortArr = new int[arr.Length];
+            int counter = 0;
+            foreach(int num in arr)
+            {
+                sortArr[counter++] = num;
+            }
+
+            bool hasSwapped = true;
+
+            while (hasSwapped)
+            {
+                hasSwapped = false;
+
+                for (int i = 0; i < sortArr.Length - 1; i++)
+                {
+                    if (sortArr[i] > sortArr[i + 1])
+                    {
+                        int temp = sortArr[i];
+                        sortArr[i] = sortArr[i + 1];
+                        sortArr[i + 1] = temp;
+                        hasSwapped = true;
+                    }
+                }
+            }
+
+            counter = 0;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] != sortArr[i])
+                    counter++;
+            }
+
+            return counter;
+        }
+
+        public int HeightChecker(int[] heights)
+        {
+            int res = 0;
+            int curHeight = 0;
+            int[] freq = new int[101];
+
+            // time: 0(n);
+            // space : o(1);
+
+            foreach (var height in heights)
+            {
+                freq[height]++;
+            }
+
+            for (int i = 0; i < heights.Length; i++)
+            {
+                while (freq[curHeight] == 0)
+                    curHeight++;
+
+                if (curHeight != heights[i])
+                    res++;
+
+                freq[curHeight]--;
+            }
+
+            return res;
+        }
     }
 }
