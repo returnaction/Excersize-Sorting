@@ -20,6 +20,10 @@ namespace Excersize_Sorting
 
         static void Main(string[] args)
         {
+
+            /// https://leetcode.com/explore/learn/card/sorting/
+            /// 
+
             //string[] words = { "we", "top", "are", "dic" };
 
             //Array.Sort(words, new MyComparer());
@@ -27,8 +31,8 @@ namespace Excersize_Sorting
             //foreach(string w in words)
             //    Console.WriteLine(w);
 
-            int[] arr = { 5, 3, 1, 2, 4 };
-            int[] result = SelectionSort(arr);
+            int[] arr = { 2, 0, 2, 1, 1, 0 };
+            //int[] result = SelectionSort(arr);
             int[] result2 = BubbleSort(arr);
 
 
@@ -39,11 +43,11 @@ namespace Excersize_Sorting
         {
             int minIndex;
 
-            for(int i = 0; i < arr.Length; i++)
+            for (int i = 0; i < arr.Length; i++)
             {
                 minIndex = i;
 
-                for(int j = i + 1; j < arr.Length; j++)
+                for (int j = i + 1; j < arr.Length; j++)
                 {
                     if (arr[j] < arr[minIndex])
                         minIndex = j;
@@ -57,8 +61,30 @@ namespace Excersize_Sorting
             return arr;
         }
 
-        // Buble Sort
-        public static int[] BubbleSort(int[] nums)
+        public static void BubbleSort(int[] arr)
+        {
+            bool hasSwapped = true;
+
+            while (hasSwapped)
+            {
+                hasSwapped = false;
+
+                for (int i = 0; i < arr.Length - 1; i++)
+                {
+                    if (arr[i] > arr[i + 1])
+                    {
+                        int temp = arr[i];
+                        arr[i] = arr[i + 1];
+                        arr[i + 1] = temp;
+                        hasSwapped = true;
+                    }
+                }
+            }
+
+        }
+
+        // Buble Sort Mine
+        public static int[] BubbleSortMine(int[] nums)
         {
             for (int i = 0; i < nums.Length - 1; i++)
             {
@@ -75,7 +101,6 @@ namespace Excersize_Sorting
 
             return nums;
         }
+
     }
-
-
 }
