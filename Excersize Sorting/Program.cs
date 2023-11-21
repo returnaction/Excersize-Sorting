@@ -29,6 +29,7 @@ namespace Excersize_Sorting
 
             int[] arr = { 5, 3, 1, 2, 4 };
             int[] result = SelectionSort(arr);
+            int[] result2 = BubbleSort(arr);
 
 
         }
@@ -57,7 +58,23 @@ namespace Excersize_Sorting
         }
 
         // Buble Sort
-        
+        public static int[] BubbleSort(int[] nums)
+        {
+            for (int i = 0; i < nums.Length - 1; i++)
+            {
+                for (int j = i + 1; j < nums.Length; j++)
+                {
+                    if (nums[i] > nums[j])
+                    {
+                        int temp = nums[i];
+                        nums[i] = nums[j];
+                        nums[j] = temp;
+                    }
+                }
+            }
+
+            return nums;
+        }
     }
 
 
