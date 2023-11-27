@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
+using System.Reflection.Metadata;
 using System.Security;
 
 namespace Excersize_Sorting
@@ -21,21 +23,14 @@ namespace Excersize_Sorting
             }
         }
 
+       
+
         static void Main(string[] args)
         {
+            int[] array = { 110, 1, 21, 53, 8, 98, 26, 163, 38, 897 };
 
-            /// https://leetcode.com/explore/learn/card/sorting/
+            RadixSort(array, array.Length);
 
-            //string[] words = { "we", "top", "are", "dic" };
-
-            //Array.Sort(words, new MyComparer());
-
-            //foreach(string w in words)
-            //    Console.WriteLine(w);
-
-            int[] array = { 5,3,2,1,4 };
-
-            CountingSort(array);
 
 
         }
@@ -172,7 +167,6 @@ namespace Excersize_Sorting
             return res;
         }
 
-
         // Insertion Sort
         static public int[] InsertionSort(int[] arr)
         {
@@ -196,7 +190,6 @@ namespace Excersize_Sorting
 
             return arr;
         }
-
         static void HeapSort(int[] arr)
         {
             for (int i = arr.Length / 2 - 1; i >= 0; i--)
@@ -237,8 +230,9 @@ namespace Excersize_Sorting
 
                     // Non Comparisson Sort
         // CountingSort
-        public static void CountingSort(int[] arr)
+        public static void CountingSort1(int[] arr)
         {
+            // implementation of CodeCaza
             int MaxElement(int[] arr)
             {
                 int maxElement = arr[0];
@@ -271,9 +265,136 @@ namespace Excersize_Sorting
                 }
             }
         }
+        public static void CountingSortLeetCode(int[] arr)
+        {
+            // implementation of leetcode
+            int shift = arr.Min();
+            int K = arr.Max() - shift;
+            int[] counts = new int[K + 1];
 
+            foreach (int elem in arr)
+            {
+                counts[elem - shift]++;
+            }
 
-       
+            int startingIndex = 0;
+            for (int i = 0; i < K + 1; i++)
+            {
+                int count = counts[i];
+                counts[i] = startingIndex;
+                startingIndex += count;
+            }
+
+            int[] sortedArray = new int[arr.Length];
+            foreach (int elem in arr)
+            {
+                sortedArray[counts[elem - shift]] = elem;
+                counts[elem - shift]++;
+            }
+
+            Array.Copy(sortedArray, arr, arr.Length);
+
+        }
+
+        public static IList<IList<int>> MinimumAbsDifference(int[] arr)
+        {
+            /*
+                Given an array of distinct integers arr, find all pairs of elements with the minimum absolute difference of any two elements.
+                Return a list of pairs in ascending order(with respect to pairs), each pair [a, b] follows
+                a, b are from arr
+                a < b
+                b - a equals to the minimum absolute difference of any two elements in arr
+             */
+            int[] sortedArray = CountingSortLeetCode2(arr);
+
+            IList<IList<int>> result = new List<IList<int>>();
+
+            int minDiff = int.MaxValue;
+
+            for (int i = 0; i < arr.Length - 1; i++)
+            {
+                int curDif = sortedArray[i + 1] - sortedArray[i];
+
+                if (curDif < minDiff)
+                {
+                    result.Clear();
+                    minDiff = curDif;
+                }
+
+                if (curDif == minDiff)
+                 result.Add(new List<int> { sortedArray[i], sortedArray[i + 1] });
+            }
+
+            return result;
+        }
+        public static int[] CountingSortLeetCode2(int[] arr)
+        {
+            int shift = arr.Min();
+            int K = arr.Max() - shift;
+            int[] counts = new int[K + 1];
+
+            foreach (int elem in arr)
+            {
+                counts[elem - shift]++;
+            }
+
+            int startingIndex = 0;
+            for (int i = 0; i < K + 1; i++)
+            {
+                int count = counts[i];
+                counts[i] = startingIndex;
+                startingIndex += count;
+            }
+
+            int[] sortedArray = new int[arr.Length];
+            foreach (int elem in arr)
+            {
+                sortedArray[counts[elem - shift]] = elem;
+                counts[elem - shift]++;
+            }
+
+            Array.Copy(sortedArray, arr, arr.Length);
+
+            return arr;
+        }
+
+        // Redix Sort
+
+        public static int GetMaxVal(int[] array, int size)
+        {
+            var maxVal = array[0];
+            for (int i = 1; i < size; i++)
+                if (array[i] > maxVal)
+                    maxVal = array[i];
+            return maxVal;
+        }
+
+        public static int[] RadixSort(int[] array, int size)
+        {
+            var maxVal = GetMaxVal(array, size);
+            for (int exponent = 1; maxVal / exponent > 0; exponent *= 10)
+                CountingSort(array, size, exponent);
+            return array;
+        }
+
+        public static void CountingSort(int[] array, int size, int exponent)
+        {
+            var outputArr = new int[size];
+            var occurences = new int[10];
+            for (int i = 0; i < 10; i++)
+                occurences[i] = 0;
+            for (int i = 0; i < size; i++)
+                occurences[(array[i] / exponent) % 10]++;
+            for (int i = 1; i < 10; i++)
+                occurences[i] += occurences[i - 1];
+            for (int i = size - 1; i >= 0; i--)
+            {
+                outputArr[occurences[(array[i] / exponent) % 10] - 1] = array[i];
+                occurences[(array[i] / exponent) % 10]--;
+            }
+            for (int i = 0; i < size; i++)
+                array[i] = outputArr[i];
+        }
 
     }
 
