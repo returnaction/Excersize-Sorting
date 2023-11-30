@@ -27,11 +27,54 @@ namespace Excersize_Sorting
 
         static void Main(string[] args)
         {
-            int[] array = { 110, 1, 21, 53, 8, 98, 26, 163, 38, 897 };
+            string[] array = { "102", "473", "251", "814" };
+            int[][] queries = [[1, 1], [2, 3], [4, 2], [1, 2]];
 
-            RadixSort(array, array.Length);
+            var resutlt = SmallestTrimmedNumbers(array, queries);
 
+            int[] SmallestTrimmedNumbers(string[] nums, int[][] queries)
+            {
+                Dictionary<int, List<Pair>> map = new Dictionary<int, List<Pair>>();
 
+                for (int i = 0; i < nums.Length; i++)
+                {
+                    string str = nums[i];
+                    int n = str.Length;
+                    int l = n;
+                    for (int j = 0; j < n; j++)
+                    {
+                        if (!map.ContainsKey(l))
+                        {
+                            map[l] = new List<Pair>();
+                        }
+
+                        Pair pair = new Pair(str.Substring(j), i);
+                        map[l--].Add(pair);
+                    }
+                }
+
+                int[] ans = new int[queries.Length];
+                int idx = 0;
+
+                foreach (int[] query in queries)
+                {
+                    int kthElement = query[0];
+                    int key = query[1];
+
+                    List<Pair> list = map[key];
+
+                    list.Sort((p1, p2) =>
+                    {
+                        if (p1.S.Equals(p2.S))
+                            return p1.Index - p2.Index;
+                        return string.Compare(p1.S, p2.S, StringComparison.Ordinal);
+                    });
+
+                    ans[idx++] = list[kthElement - 1].Index;
+                }
+
+                return ans;
+            }
 
         }
 
@@ -372,6 +415,7 @@ namespace Excersize_Sorting
         public static int[] RadixSort(int[] array, int size)
         {
             var maxVal = GetMaxVal(array, size);
+
             for (int exponent = 1; maxVal / exponent > 0; exponent *= 10)
                 CountingSort(array, size, exponent);
             return array;
@@ -396,7 +440,117 @@ namespace Excersize_Sorting
                 array[i] = outputArr[i];
         }
 
+        // Radix Sort 
+
+        public static int[] RadixSort2(int[] data)
+        {
+            int[] temp = new int[data.Length];
+
+            for(int shift = 31; shift > -1; shift--)
+            {
+                int j = 0;
+
+                for (int i = 0; i < data.Length; i++)
+                {
+                    bool move = (data[i] << shift) >= 0;
+
+                    if(shift == 0 ? !move: move)
+                    {
+                        data[i - j] = data[i];
+                    }
+                    else
+                    {
+                        temp[j++] = data[i];
+                    }
+                }
+
+                Array.Copy(temp, 0, data, data.Length - j, j);
+            }
+
+            return data;
+        }
+
+        //radix leet code
+        //public void CountingSort(int[] arr, int placeVal)
+        //{
+        //    // Sorts an array of integers where the minimum value is 0 and the maximum value is NUM_DIGITS
+        //    int[] counts = new int[10];
+
+        //    foreach (int elem in arr)
+        //    {
+        //        int current = elem / placeVal;
+        //        counts[current % 10] += 1;
+        //    }
+
+        //    // We now overwrite our original counts with the starting index
+        //    // of each digit in our group of digits
+        //    int startingIndex = 0;
+        //    for (int i = 0; i < counts.Length; i++)
+        //    {
+        //        int count = counts[i];
+        //        counts[i] = startingIndex;
+        //        startingIndex += count;
+        //    }
+
+        //    int[] sortedArray = new int[arr.Length];
+        //    foreach (int elem in arr)
+        //    {
+        //        int current = elem / placeVal;
+        //        sortedArray[counts[current % 10]] = elem;
+        //        // Since we have placed an item in the index counts[current % NUM_DIGITS],
+        //        // we need to increment counts[current % NUM_DIGITS] index by 1 so the
+        //        // next duplicate digit is placed in the appropriate index
+        //        counts[current % 10] += 1;
+        //    }
+
+        //    // Common practice to copy over the sorted list into the original arr
+        //    // It's fine to just return the sortedArray at this point as well
+        //    for (int i = 0; i < arr.Length; i++)
+        //    {
+        //        arr[i] = sortedArray[i];
+        //    }
+        //}
+
+        //public void RadixSort(int[] arr)
+        //{
+        //    int maxElem = int.MinValue;
+        //    foreach (int elem in arr)
+        //    {
+        //        if (elem > maxElem)
+        //        {
+        //            maxElem = elem;
+        //        }
+        //    }
+
+        //    int placeVal = 1;
+        //    while (maxElem / placeVal > 0)
+        //    {
+        //        CountingSort(arr, placeVal);
+        //        placeVal *= 10;
+        //    }
+        //}
+
+        
+
     }
+
+    //Query Kth Smallest Trimmed Number
+
+    
+        public  class Pair
+        {
+            public string S { get; }
+            public int Index { get; }
+
+            public Pair(string s, int index)
+            {
+                S = s;
+                Index = index;
+            }
+        }
+
+       
+    
 
 
     // Kastet help me
