@@ -23,62 +23,65 @@ namespace Excersize_Sorting
             }
         }
 
-       
+
 
         static void Main(string[] args)
         {
-            string[] array = { "102", "473", "251", "814" };
-            int[][] queries = [[1, 1], [2, 3], [4, 2], [1, 2]];
+            int[] array2 = { 22, 50, 32, 28, 41, 12 };
+            int[] result2 = BucketSort(array2, 5);
 
-            var resutlt = SmallestTrimmedNumbers(array, queries);
+            //string[] array = { "102", "473", "251", "814" };
+            //int[][] queries = [[1, 1], [2, 3], [4, 2], [1, 2]];
 
-            int[] SmallestTrimmedNumbers(string[] nums, int[][] queries)
-            {
-                Dictionary<int, List<Pair>> map = new Dictionary<int, List<Pair>>();
+            //var resutlt = SmallestTrimmedNumbers(array, queries);
 
-                for (int i = 0; i < nums.Length; i++)
-                {
-                    string str = nums[i];
-                    int n = str.Length;
-                    int l = n;
-                    for (int j = 0; j < n; j++)
-                    {
-                        if (!map.ContainsKey(l))
-                        {
-                            map[l] = new List<Pair>();
-                        }
+            //int[] SmallestTrimmedNumbers(string[] nums, int[][] queries)
+            //{
+            //    Dictionary<int, List<Pair>> map = new Dictionary<int, List<Pair>>();
 
-                        Pair pair = new Pair(str.Substring(j), i);
-                        map[l--].Add(pair);
-                    }
-                }
+            //    for (int i = 0; i < nums.Length; i++)
+            //    {
+            //        string str = nums[i];
+            //        int n = str.Length;
+            //        int l = n;
+            //        for (int j = 0; j < n; j++)
+            //        {
+            //            if (!map.ContainsKey(l))
+            //            {
+            //                map[l] = new List<Pair>();
+            //            }
 
-                int[] ans = new int[queries.Length];
-                int idx = 0;
+            //            Pair pair = new Pair(str.Substring(j), i);
+            //            map[l--].Add(pair);
+            //        }
+            //    }
 
-                foreach (int[] query in queries)
-                {
-                    int kthElement = query[0];
-                    int key = query[1];
+            //    int[] ans = new int[queries.Length];
+            //    int idx = 0;
 
-                    List<Pair> list = map[key];
+            //    foreach (int[] query in queries)
+            //    {
+            //        int kthElement = query[0];
+            //        int key = query[1];
 
-                    list.Sort((p1, p2) =>
-                    {
-                        if (p1.S.Equals(p2.S))
-                            return p1.Index - p2.Index;
-                        return string.Compare(p1.S, p2.S, StringComparison.Ordinal);
-                    });
+            //        List<Pair> list = map[key];
 
-                    ans[idx++] = list[kthElement - 1].Index;
-                }
+            //        list.Sort((p1, p2) =>
+            //        {
+            //            if (p1.S.Equals(p2.S))
+            //                return p1.Index - p2.Index;
+            //            return string.Compare(p1.S, p2.S, StringComparison.Ordinal);
+            //        });
 
-                return ans;
-            }
+            //        ans[idx++] = list[kthElement - 1].Index;
+            //    }
+
+            //    return ans;
+            //}
 
         }
 
-                    //  Comparisson Sort
+        //  Comparisson Sort
 
         // Selection Sort
         static public int[] SelectionSort(int[] arr)
@@ -216,7 +219,7 @@ namespace Excersize_Sorting
             // is good for small array;
             // is good when input is very close to being sorted;
 
-                //7, 3, 2, 5, 6, 10, 9, 8, 1 
+            //7, 3, 2, 5, 6, 10, 9, 8, 1 
 
             for (int i = 1; i < arr.Length; i++)
             {
@@ -271,7 +274,7 @@ namespace Excersize_Sorting
             }
         }
 
-                    // Non Comparisson Sort
+        // Non Comparisson Sort
         // CountingSort
         public static void CountingSort1(int[] arr)
         {
@@ -280,7 +283,7 @@ namespace Excersize_Sorting
             {
                 int maxElement = arr[0];
 
-                for(int i = 1; i < arr.Length; i++)
+                for (int i = 1; i < arr.Length; i++)
                 {
                     if (arr[i] > maxElement)
                         maxElement = arr[i];
@@ -293,12 +296,12 @@ namespace Excersize_Sorting
 
             int[] occurrences = new int[maxElement + 1];
 
-            for(int i = 0; i < arr.Length; i++)
+            for (int i = 0; i < arr.Length; i++)
             {
                 occurrences[arr[i]]++;
             }
 
-            for(int i = 0, j = 0; i <= maxElement; i++)
+            for (int i = 0, j = 0; i <= maxElement; i++)
             {
                 while (occurrences[i] > 0)
                 {
@@ -365,7 +368,7 @@ namespace Excersize_Sorting
                 }
 
                 if (curDif == minDiff)
-                 result.Add(new List<int> { sortedArray[i], sortedArray[i + 1] });
+                    result.Add(new List<int> { sortedArray[i], sortedArray[i + 1] });
             }
 
             return result;
@@ -446,7 +449,7 @@ namespace Excersize_Sorting
         {
             int[] temp = new int[data.Length];
 
-            for(int shift = 31; shift > -1; shift--)
+            for (int shift = 31; shift > -1; shift--)
             {
                 int j = 0;
 
@@ -454,7 +457,7 @@ namespace Excersize_Sorting
                 {
                     bool move = (data[i] << shift) >= 0;
 
-                    if(shift == 0 ? !move: move)
+                    if (shift == 0 ? !move : move)
                     {
                         data[i - j] = data[i];
                     }
@@ -530,14 +533,128 @@ namespace Excersize_Sorting
         //    }
         //}
 
-        
+        //  Maximum Gap Mine Emplementation
+        // https://leetcode.com/explore/learn/card/sorting/695/non-comparison-based-sorts/4491/
+        static int MaximumGap(int[] nums)
+        {
 
-    }
+            if (nums.Length < 2)
+                return 0;
 
-    //Query Kth Smallest Trimmed Number
+            void BubbleSort(int[] arr)
+            {
+                bool swapped = true;
+                while (swapped)
+                {
+                    swapped = false;
 
-    
-        public  class Pair
+                    for (int i = 0; i < arr.Length - 1; i++)
+                    {
+                        if (arr[i] > arr[i + 1])
+                        {
+                            int temp = arr[i];
+                            arr[i] = arr[i + 1];
+                            arr[i + 1] = temp;
+                            swapped = true;
+                        }
+                    }
+                }
+            }
+
+            BubbleSort(nums);
+
+            int maxGap = 0;
+
+            for (int j = 1; j < nums.Length; j++)
+            {
+                if (nums[j] - nums[j - 1] > maxGap)
+                    maxGap = nums[j] - nums[j - 1];
+            }
+
+            return maxGap;
+        }
+        static int MaximumGap2(int[] nums)
+        {
+            if (nums == null || nums.Length < 2)
+                return 0;
+
+            Array.Sort(nums);
+
+            int maxGap = 0;
+
+            for (int i = 1; i < nums.Length; i++)
+            {
+                int gap = nums[i] - nums[i - 1];
+                maxGap = Math.Max(maxGap, gap);
+            }
+
+            return maxGap;
+        }
+
+        // Bucket Sort 
+        static int[] BucketSort(int[] arr, int K)
+        {
+            List<List<int>> buckets = new List<List<int>>(K);
+
+            int shift = arr.Min();
+            int maxvalue = arr.Max() - shift;
+
+            // Initialize buckets
+
+            for (int i = 0; i < K; i++)
+            {
+                buckets.Add(new List<int>());
+            }
+
+            // Place elements into buckets
+
+            double bucketSize = (double)maxvalue / K;
+
+            if (bucketSize < 1)
+                bucketSize = 1.0;
+
+            foreach (int elem in arr)
+            {
+                int index = (int)((elem - shift) / bucketSize);
+
+                if (index == K)
+                    buckets[K - 1].Add(elem);
+                else
+                {
+                    buckets[index].Add(elem);
+                }
+            }
+
+            // Sort individual buckets
+
+            foreach (List<int> bucket in buckets)
+            {
+                bucket.Sort();
+            }
+
+            // Convert sorted buckets into final output
+
+            List<int> sortedList = new List<int>();
+
+            foreach (List<int> bucket in buckets)
+            {
+                sortedList.AddRange(bucket);
+            }
+
+            // Mutate the original array with sorted elements 
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = sortedList[i];
+            }
+
+            return arr;
+
+        }
+
+        //Query Kth Smallest Trimmed Number
+
+
+        public class Pair
         {
             public string S { get; }
             public int Index { get; }
@@ -549,66 +666,68 @@ namespace Excersize_Sorting
             }
         }
 
-       
-    
 
 
-    // Kastet help me
 
-    public class ListNode
-    {
-        public int val;
-        public ListNode next;
-        public ListNode(int val = 0, ListNode? next = null)
+
+        // Kastet help me
+
+        public class ListNode
         {
-            this.val = val;
-            this.next = next;
-        }
-    }
-
-    public class Solution
-    {
-        public ListNode InsertionSortList(ListNode head)
-        { //https://leetcode.com/explore/learn/card/sorting/694/comparison-based-sorts/4485/
-            if (head == null || head.next == null)
-                return head;
-
-            ListNode temp = head;
-
-            while(temp != null)
+            public int val;
+            public ListNode next;
+            public ListNode(int val = 0, ListNode? next = null)
             {
-                ListNode next = temp.next;
-                ListNode start = head;
-                ListNode prev = head;
+                this.val = val;
+                this.next = next;
+            }
+        }
 
-                while(start != next)
+        public class Solution
+        {
+            public ListNode InsertionSortList(ListNode head)
+            { //https://leetcode.com/explore/learn/card/sorting/694/comparison-based-sorts/4485/
+                if (head == null || head.next == null)
+                    return head;
+
+                ListNode temp = head;
+
+                while (temp != null)
                 {
-                    if(start.val > temp.val)
+                    ListNode next = temp.next;
+                    ListNode start = head;
+                    ListNode prev = head;
+
+                    while (start != next)
                     {
-                        temp.next = start;
-                        if(start == head)
+                        if (start.val > temp.val)
                         {
-                            head = temp;
+                            temp.next = start;
+                            if (start == head)
+                            {
+                                head = temp;
+                            }
+                            else
+                            {
+                                prev.next = temp;
+                            }
+                            while (start.next != temp)
+                            {
+                                start = start.next;
+                            }
+                            start.next = next;
                         }
-                        else
-                        {
-                            prev.next = temp;
-                        }
-                        while(start.next != temp)
-                        {
-                            start = start.next;
-                        }
-                        start.next = next;
+
+                        prev = start;
+                        start = start.next;
                     }
 
-                    prev = start;
-                    start = start.next;
+                    temp = next;
                 }
 
-                temp = next;
+                return head;
             }
-
-            return head;
         }
     }
 }
+
